@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="utf-8">
+		<title>全球疫情分析</title>
+		<script th:src="@{/js/index/jquery.js}"></script>
+		<script th:src="@{/js/index/echarts.min.js}"></script>
+		<script th:src="@{/js/index/china.js}"></script>
+		<link th:href="@{/css/index/globeEpidemic.css}" rel="stylesheet" />
+		<link th:href="@{/css/common/background.css}" rel="stylesheet" />
+		<script th:src="@{/js/index/jquery-1.4.2.min.js}"></script>
+	</head>
+	<body>
+        <canvas></canvas>
+		<div id="globeEpidemic_l1"></div>
+		<div id="globeEpidemic_c1"></div>
+		<div id="globeEpidemic_r1"></div>
+	</body>
+    <script th:src="@{/js/index/background.js}"></script>
+    <script th:src="@{/js/globeEpidemic/globeEpidemic_left_l1.js}"></script>
+    <script th:src="@{/js/globeEpidemic/globeEpidemic_center_c1.js}"></script>
+    <script th:src="@{/js/globeEpidemic/globeEpidemic_right_r1.js}"></script>
+    <script th:src="@{/js/globeEpidemic/globeEpidemic_controller.js}"></script>
+
+</html>

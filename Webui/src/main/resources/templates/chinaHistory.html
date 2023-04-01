@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="utf-8">
+		<title>国内历史详情</title>
+        <script th:src="@{/js/index/jquery.js}"></script>
+		<script th:src="@{/js/common/echarts.js}"></script>
+		<script th:src="@{/js/index/china.js}"></script>
+		<link th:href="@{/css/index/chinaHistory.css}" rel="stylesheet" />
+        <link th:href="@{/css/common/background.css}" rel="stylesheet" />
+		<script th:src="@{/js/index/jquery-1.4.2.min.js}"></script>
+	</head>
+	<body>
+        <canvas></canvas>
+        <div id="chinaHistory_l1"></div>
+		<div id="chinaHistory_c1"></div>
+		<div id="chinaHistory_c2"></div>
+		<div id="chinaHistory_c3"></div>
+		<div id="chinaHistory_r1"></div>
+	</body>
+    <script th:src="@{/js/index/background.js}"></script>
+    <script th:src="@{/js/chinaHistory/chinaHistory_center_c1.js}"></script>
+    <script th:src="@{/js/chinaHistory/chinaHistory_center_c2.js}"></script>
+    <script th:src="@{/js/chinaHistory/chinaHistory_center_c3.js}"></script>
+    <script th:src="@{/js/chinaHistory/chinaHistory_left_l1.js}"></script>
+    <script th:src="@{/js/chinaHistory/chinaHistory_right_l1.js}"></script>
+    <script th:src="@{/js/chinaHistory/chinaHistory_controller.js}"></script>
+</html>

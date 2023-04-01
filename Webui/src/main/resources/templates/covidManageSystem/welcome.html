@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html class="x-admin-sm" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <title>首页</title>
+        <meta name="renderer" content="webkit">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+        <link rel="stylesheet" th:href="@{../css/managesystem/font.css}">
+        <link rel="stylesheet" th:href="@{../css/managesystem/xadmin.css}">
+        <script th:src="@{../managesystemlib/layui/layui.js}" charset="utf-8"></script>
+        <script type="text/javascript" th:src="@{../js/managesystem/xadmin.js}"></script>
+
+    </head>
+    <body>
+        <div class="layui-fluid">
+            <div class="layui-row layui-col-space15">
+                <div class="layui-col-md12" >
+
+                    <img th:src="@{/images/beijing.jpg}" width=100% height="400px">
+                </div>
+                <div class="layui-col-md12">
+                    <div class="layui-card">
+                        <div class="layui-card-header">全国疫情统计</div>
+                        <div class="layui-card-body ">
+                            <ul class="layui-row layui-col-space10 layui-this x-admin-carousel x-admin-backlog" >
+                                <li class="layui-col-md2 layui-col-xs6">
+                                    <a href="javascript:;" class="x-admin-backlog-body">
+                                        <h3>累积确诊</h3>
+                                        <p >
+                                            <cite th:text="${cofirm}">66</cite></p>
+                                    </a>
+                                </li>
+                                <li class="layui-col-md2 layui-col-xs6">
+                                    <a href="javascript:;" class="x-admin-backlog-body">
+                                        <h3>现存确诊</h3>
+                                        <p>
+                                            <cite th:text="${cofirm_now}">12</cite></p>
+                                    </a>
+                                </li>
+                                <li class="layui-col-md2 layui-col-xs6">
+                                    <a href="javascript:;" class="x-admin-backlog-body">
+                                        <h3>新增确诊</h3>
+                                        <p>
+                                            <cite th:text="${cofirm_add}">99</cite></p>
+                                    </a>
+                                </li>
+                                <li class="layui-col-md2 layui-col-xs6">
+                                    <a href="javascript:;" class="x-admin-backlog-body">
+                                        <h3>新增疑似</h3>
+                                        <p>
+                                            <cite th:text="${suspected}">67</cite></p>
+                                    </a>
+                                </li>
+                                <li class="layui-col-md2 layui-col-xs6">
+                                    <a href="javascript:;" class="x-admin-backlog-body">
+                                        <h3>累积治愈</h3>
+                                        <p>
+                                            <cite th:text="${cured}">67</cite></p>
+                                    </a>
+                                </li>
+                                <li class="layui-col-md2 layui-col-xs6 ">
+                                    <a href="javascript:;" class="x-admin-backlog-body">
+                                        <h3>累积死亡</h3>
+                                        <p>
+                                            <cite th:text="${dead}">6766</cite></p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-sm6 layui-col-md3">
+                    <div class="layui-card"></div>
+                </div>
+                <style id="welcome_style"></style>
+            </div>
+        </div>
+        </div>
+    <script>
+        /*--------------------全国统计数据-----------------------------*/
+        $.getJSON("http://localhost:8080/covid/getNationalData_l1", function (data) {
+            var map = data.data
+            $("#cofirm").html(map.cofirm)
+            $("#cofirm_now").html(map.cofirm_now)
+            $("#cofirm_add").html(map.cofirm_add)
+            $("#suspected").html(map.suspected)
+            $("#cured").html(map.cured)
+            $("#dead").html(map.dead)
+        })
+    </script>
+    </body>
+</html>

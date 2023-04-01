@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <link rel="stylesheet" th:href="@{../layui_1/css/layui.css}" media="all"/>
+    <link rel="stylesheet" th:href="@{../css/common/public.css}" media="all"/>
+</head>
+<body>
+    <!--layui公共模块-->
+    <div>
+    <!--添加和修改弹出层-->
+    <div id="addOrUpdateDiv" style="display: none;padding: 10px;padding-right: 5%">
+        <form action="" method="post" class="layui-form" id="dataFrm" lay-filter="dataFrm">
+            <div class="layui-form-item">
+                <div class="layui-inline">
+
+                    <label class="layui-form-label">地区名称</label>
+                    <div class="layui-input-inline">
+                        <input type="hidden" name="id">
+                        <input type="text" name="other" lay-verify="required" autocomplete="off"
+                               class="layui-input input-radius" placeholder="请输入地区名称">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">负责人</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="name" lay-verify="required" autocomplete="off" class="layui-input input-radius" placeholder="请输入负责人">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">负责人联系电话</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="phone" lay-verify="required" autocomplete="off" class="layui-input input-radius" placeholder="请输入负责人联系电话">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">是否已消毒</label>
+                    <div class="layui-input-inline">
+                        <input type="radio" name="disinfect" value="已消毒" title="已消毒">
+                        <input type="radio" name="disinfect" value="未消毒" title="未消毒" checked>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">消毒时间</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="disinfectTime" class="layui-input" lay-verify="required" id="test1" placeholder="请选择消毒时间">
+                    </div>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-input-block" style="text-align: center;padding-right: 7%">
+                    <button type="button" class="layui-btn layui-btn-radius" lay-submit="" lay-filter="doSubmit" id="doSubmit"><i
+                            class="layui-icon layui-icon-search layui-icon-normal"></i>提交
+                    </button>
+                    <button type="reset" class="layui-btn layui-btn-radius layui-btn-warm"><i
+                            class="layui-icon layui-icon-refresh"></i><span>重置</span>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <!--数据表格-->
+    <div>
+    <table class="layui-hide" id="menuTable" lay-filter="menuTable"></table>
+    <div id="menuToolBar" style="display: none">
+        <button type="button" lay-event="add"  class="layui-btn layui-btn-sm layui-btn-normal layui-btn-radius">
+            <i class="layui-icon layui-icon-add-1"></i>添加消毒区域
+        </button>
+    </div>
+    <div id="menuRowBar" style="display: none;">
+        <button type="button" lay-event="update"  class="layui-btn layui-btn-sm layui-btn-radius"><i
+                class="layui-icon layui-icon-edit"></i>编辑
+        </button>
+        <button type="button" lay-event="delete"  class="layui-btn layui-btn-sm layui-btn-danger layui-btn-radius"><i
+                class="layui-icon layui-icon-delete"></i>删除
+        </button>
+    </div>
+</div>
+    <script type="text/javascript" th:src="@{../layui_1/layui.js}"></script>
+    <script type="text/javascript" th:src="@{../layui_1/layui_ext/dtree/dtree.js}"></script>
+    <script type="text/javascript">
+
+    //提升数据表格的作用域，因为底下还有一个reloadTable方法
+    var tableIns;
+
+    layui.extend({
+        dtree: '../layui_1/layui_ext/dtree/dtree'
+    }).use(['jquery', 'form', 'layer', 'laydate', 'table', 'layedit','dtree'], function () {
+        var $ = layui.jquery;
+        var form = layui.form;
+        var layer = layui.layer;
+        var table = layui.table;
+        var dtree = layui.dtree;
+        var laydate = layui.laydate;
+
+        //常规用法
+        laydate.render({
+            elem: '#test1',
+            type: 'date'
+        });
+        //初始化表格 加载数据
+        tableIns = table.render({
+            elem: "#menuTable",
+            title: "消毒数据表格",
+            url: "/other/loadAllOther",
+            toolbar: "#menuToolBar",
+            page: true,
+            width:1077,
+            height: "full-30",
+            cols: [ [
+                {field: 'id', title: 'ID', align: 'center',width:'80'},
+                {field: 'other', title: '地区名称', align: 'center',width:'155'},
+                {field: 'name', title: '负责人', align: 'center',width:'150'},
+                {field: 'phone', title: '负责人电话', align: 'center',width:'160'},
+                {field: 'disinfect', title: '是否消毒', align: 'center',width:'150',templet:function (d) {
+                        return d.disinfect==="已消毒"?'<span class="layui-badge layui-bg-green">已消毒</span>':'<span class="layui-badge layui-bg-red">未消毒</span>';
+                    }},
+                {field: 'disinfectTime', title: '消毒时间', align: 'center',width:'190'
+                    ,templet : "<div>{{layui.util.toDateString(d.disinfectTime, 'yyyy-MM-dd')}}</div>"
+                },
+
+                {fixed: 'right', title: '操作', toolbar: '#menuRowBar', align: 'center',width:'180'}
+            ] ],
+            done: function (data, curr, count) {
+                //不是第一页时，如果当前返回的数据为0那么就返回上一页
+                if (data.data.length == 0 && curr != 1) {
+                    tableIns.reload({
+                        page: {
+                            curr: curr - 1
+                        }
+                    })
+                }
+            }
+        });
+
+        //监控模糊查询按钮事件
+        form.on("submit(doSearch)", function (data) {
+            tableIns.reload({
+                where: data.field,
+                page: {
+                    curr: 1
+                }
+            });
+            return false;
+        });
+
+        //监控工具条事件
+        table.on("toolbar(menuTable)", function (obj) {
+            switch (obj.event) {
+                case 'add':
+                    openAddLayer();
+                    break;
+            };
+        });
+
+        //监控行工具条事件
+        table.on("tool(menuTable)", function (obj) {
+            //获取当前行数据
+            var data = obj.data;
+            switch (obj.event) {
+                case 'delete':
+                    deleteMenu(data);
+                    break;
+                case 'update':
+                    updateMenu(data);
+                    break;
+            };
+        });
+
+        var mainIndex;
+        var url;
+
+        //打开添加弹出层
+        function openAddLayer() {
+            mainIndex = layer.open({
+                type:1,
+                content:$("#addOrUpdateDiv"),
+                area:['450px','450px'],
+                title:'添加菜单',
+                success:function () {
+                    $("#dataFrm")[0].reset();
+                    //设置下拉树中父节点的值为空
+                    $("#pid").val("");
+                    url="/other/addOther";
+
+                }
+            });
+        }
+
+        //打开修改的弹出层
+        function updateMenu(data) {
+            mainIndex = layer.open({
+                type:1,
+                content:$("#addOrUpdateDiv"),
+                area:['450px','450px'],
+                title:'修改菜单',
+                success:function () {
+                    //清空原有的数据
+                    $("#dataFrm")[0].reset();
+                    //装载新的数据
+                    form.val("dataFrm",data);
+                    url="/other/updateOther";
+                }
+            });
+        }
+
+        form.on("submit(doSubmit)",function (data) {
+            $.post(url,data.field,function (res) {
+                if (res.code==200){
+                    tableIns.reload();
+                }
+                layer.msg(res.msg);
+                layer.close(mainIndex);
+            });
+            return false;
+        });
+
+        //删除
+        function deleteMenu(data) {
+            layer.confirm('你确定要删除【' + data.other + '】这个区域吗？', {icon: 3, title: '提示'}, function (index) {
+                $.post("/other/deleteOther", {id: data.id},function (res) {
+                    if (res.code == 200) {
+                        tableIns.reload({
+                            where:"",
+                        });
+                    }
+                    layer.msg(res.msg);
+                });
+                layer.close(index);
+            });
+
+        }
+
+
+
+    });
+
+    //给其它页面刷新当前页面数据表格的方法
+    function reloadTable(id) {
+        tableIns.reload({
+            where:{
+                id:id
+            },
+            page:{
+                curr:1
+            }
+        });
+    }
+
+</script>
+</div>
+</body>
+</html>

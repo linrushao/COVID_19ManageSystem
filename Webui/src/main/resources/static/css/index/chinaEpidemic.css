@@ -1,0 +1,68 @@
+/*body {*/
+/*	margin: 0;*/
+/*	!* background: url(../images/5.gif)no-repeat top center; *!*/
+/*	background: #9eaa99;*/
+/*	line-height:1.15;*/
+/*}*/
+
+#chinaEpidemic_c0 {
+	position: absolute;
+	width: 100%;
+	height: 20%;
+	top: 2%;
+	/*background: #00BFFF;*/
+}
+
+.num {
+	align-items: center;
+	justify-content: center;
+	color: #40e0d0;
+	font-size: 20px;
+}
+
+#chinaEpidemic_c1 {
+	position: absolute;
+	width: 40%;
+	height: 80%;
+	top: 20%;
+	left: 30%;
+	/*background: #2699FB;*/
+}
+
+.chinaEpidemic_txt {
+	width:16%;
+	float: left;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 15px;
+	color: #c4ffc4;
+}
+
+.chinaEpidemic_num {
+	width:16%;
+	float: left;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 15px;
+	color: #c4ffc4;
+}
+
+
+#chinaEpidemic_l1 {
+	position: absolute;
+	width: 30%;
+	height: 80%;
+	top: 20%;
+	/*background: #9C1A1C;*/
+}
+
+#chinaEpidemic_r1 {
+	position: absolute;
+	width: 30%;
+	height: 80%;
+	top: 20%;
+	left: 70%;
+	/*background: #aaaa7f;*/
+}

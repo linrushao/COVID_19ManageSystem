@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html class="x-admin-sm" xmlns:th="http://www.thymeleaf.org" xmlns:overflow="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta charset="UTF-8">
+        <title>全球疫情数据管理</title>
+        <meta name="renderer" content="webkit">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+        <link rel="stylesheet" th:href="@{../css/managesystem/font.css}">
+        <link rel="stylesheet" th:href="@{../css/managesystem/xadmin.css}">
+        <link rel="stylesheet" th:href="@{../layui_1/css/layui.css}" media="all"/>
+        <link rel="stylesheet" th:href="@{../css/common/public.css}" media="all"/>
+        <script th:src="@{../layui_1/layui.js}" charset="utf-8"></script>
+        <script type="text/javascript" th:src="@{../js/managesystem/xadmin.js}"></script>
+    </head>
+    <body class="childrenBody">
+        <!--搜索条件-->
+        <form action="" method="post" id="searchFrm" lay-filter="searchFrm" class="layui-form">
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">国家名称</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="country" class="layui-input input-radius" placeholder="请输入国家名称">
+                    </div>
+                </div>
+                <div class="layui-inline" style="padding-left: 3%">
+                    <button type="button" class="layui-btn layui-btn-sm layui-btn-radius" lay-submit="" lay-filter="doSearch"><i
+                            class="layui-icon layui-icon-search layui-icon-normal"></i>查询
+                    </button>
+                    <button type="reset" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-warm"><i
+                            class="layui-icon layui-icon-refresh"></i><span>重置</span>
+                    </button>
+
+                    <button type="button" lay-event="add" class="layui-btn layui-btn-sm layui-btn-radius" lay-submit="" lay-filter="doOutPortExcel">
+                        <i class="layui-icon layui-icon-normal">&#xe654;</i>导出Excel疫情数据
+                    </button>
+
+                </div>
+            </div>
+        </form>
+        <!-- table -->
+        <div style="padding: 20px;">
+            <table class="layui-hide" id="demo" lay-filter="test"></table>
+        </div>
+        <script>
+        var tableIns;
+        var mainIndex;
+        //加载模块
+        layui.use(['upload','jquery'],function(){
+            // 得到需要的内置组件
+            var layer = layui.layer //弹层
+            var $=layui.jquery
+            var laypage = layui.laypage; //分页
+            var table = layui.table; //表格
+            var element = layui.element; //元素操作
+            var form = layui.form;//表单
+
+
+            // Tab 切换
+            element.on('tab(demo)', function(data){
+                layer.tips('切换了 '+ data.index +'：'+ this.innerHTML, this, {
+                    tips: 1
+                });
+            });
+
+            // 执行一个 table 实例
+            tableIns = table.render({
+                elem: '#demo'
+                ,height: 450
+                ,url: '/globe/globeEpidemicData' //数据接口（此处为静态数据，仅作演示）
+                ,title: '用户表'
+                ,page: true //开启分页
+                ,defaultToolbar: ["cols","export","print"] //这里在右边显示
+                ,cols: [ [ //表头
+                    {type: 'checkbox', fixed: 'left'}
+                    ,{field: 'id', title: 'ID', width:70, sort: true, fixed: 'left'}
+                    ,{field: 'country', title: '国家', width:100}
+                    ,{field: 'historyTime', title: '历史时间',width:'150', sort: true}
+                    ,{field: 'cofirmAdd', title: '新增确诊', width: 100, sort: true}
+                    ,{field: 'cofirm', title: '累积确诊', width:100, sort: true}
+                    ,{field: 'cofirmNow', title: '现存确诊', width: 100, sort: true}
+                    ,{field: 'dead', title: '累积死亡', width:100, sort: true}
+                    ,{field: 'deadAdd', title: '新增死亡', width:100, sort: true}
+                    ,{field: 'cured', title: '累积治愈', width:100, sort: true}
+                    ,{field: 'curedAdd', title: '新增治愈', width:100, sort: true}
+                    ,{field: 'suspected', title: '疑似病例', width:100, sort: true}
+                    ,{field: 'suspectedAdd', title: '新增疑似', width:100, sort: true}
+                ] ]
+            });
+
+
+            //模糊查询
+            form.on("submit(doSearch)",function (data){
+                tableIns.reload({
+                    where: data.field,
+                    page:{
+                        curr: 1
+                    }
+                })
+            })
+
+            // 分页
+            laypage.render({
+                elem: 'pageDemo' //分页容器的id
+                ,count: 1000 //数据总数
+                ,limit: 10 //每页显示的数据条数
+                ,skin: '#1E9FFF' //自定义选中色值
+                //,layout: ['prev', 'page', 'next', 'count', 'limit', 'refresh', 'skip'] //自定义排版
+                ,jump: function(obj, first){
+                    if(!first){
+                        layer.msg('第'+ obj.curr +'页', {offset: 'b'});
+                    }
+                }
+            });
+
+            // 导出Excel数据
+            form.on("submit(doOutPortExcel)",function () {
+                window.location.href = "/globe/excelOutPortGlobe";
+            });
+        });
+    </script>
+    </body>
+</html>

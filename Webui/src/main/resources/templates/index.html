@@ -1,0 +1,143 @@
+<!doctype html>
+<html  class="x-admin-sm" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>登录页面</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <link rel="stylesheet" th:href="@{../layui/layui/css/layui.css}" media="all">
+    <link rel="stylesheet" th:href="@{../css/common/public.css}" media="all">
+    <link rel="stylesheet" th:href="@{../css/login/style.css}" media="all">
+    <link th:href="@{../css/common/bootstrap.css}" rel="stylesheet" type="text/css" media="all" />
+    <link rel="stylesheet" type="text/css" th:href="@{../css/login/registerstyle.css}"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+
+</head>
+<body class="loginBody">
+<form class="layui-form">
+    <div class="login_face"><img th:src="@{/images/login.jpg}" class="userAvatar"></div>
+    <div class="layui-form-item input-item">
+        <label for="username">用户名</label>
+        <input type="text" placeholder="请输入用户名" autocomplete="off" id = "userName" name="username" class="layui-input" lay-verify="required">
+    </div>
+    <div class="layui-form-item input-item">
+        <label for="password">密码</label>
+        <input type="password" placeholder="请输入密码" autocomplete="off" id = "password" name="password" class="layui-input" lay-verify="required">
+    </div>
+    <div class="layui-form-item input-item" id="imgCode">
+        <label for="code">验证码</label>
+        <input type="text" placeholder="请输入验证码" name="code" autocomplete="off" id="code" class="layui-input" lay-verify="required">
+        <img th:src="@{/login/getCode}" onclick="this.src=this.src+'?'">
+    </div>
+    <div class="layui-form-item">
+        <button class="layui-btn layui-block" lay-filter="login" lay-submit>登录</button>
+    </div>
+    <div class="new">
+        <p><a href="#"  data-toggle="modal" data-target="#myModal6" >忘记密码?</a></p>
+        <p class="sign">没有账号?<a href="#"  data-toggle="modal" data-target="#myModal5">注册</a></p>
+        <div class="clear"></div>
+    </div>
+</form>
+</div>
+<!--//banner-bottom-->
+<!-- Modal1 -->
+<div class="modal fade" id="myModal5" tabindex="-1" role="dialog" >
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="login-form">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4>注册</h4>
+                    <form action="/adduserRegister" method="post" id="dataFrm" lay-filter="dataFrm">
+                        <input type="text" name="username" placeholder="请输入姓名" lay-verify="required">
+                        <input type="text" name="number" placeholder="请输入学号" lay-verify="required|number">
+                        <input type="password" name="password" placeholder="请输入密码" lay-verify="required">
+<!--                        <input type="password" name="conform password" placeholder="请确认密码" lay-verify="required">-->
+                        <div class="tp">
+                            <input type="submit" lay-submit="" lay-filter="doSubmit" id="doSubmit" value="立即注册">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="myModal6" tabindex="-1" role="dialog" >
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="login-form">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4>初始密码：123456</h4>
+                    <form action="/resetPwd" method="post" id="dataFrm2" lay-filter="dataFrm2">
+                        <input type="text" name="username" placeholder="请输入姓名" lay-verify="required">
+                        <input type="text" name="number" placeholder="请输入学号" lay-verify="required|number">
+                        <div class="tp">
+                            <input type="submit" lay-submit="" lay-filter="doSubmit2" id="doSubmit2" value="重置密码">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- //Modal1 -->
+<script th:src="@{../js/index/jquery-1.11.1.min.js}"></script>
+<script th:src="@{../js/common/bootstrap.js}"></script>
+<script type="text/javascript" th:src="@{./../layui_1/layui.js}" charset="utf-8"></script>
+
+<script type="text/javascript">
+    layui.use(['form','layer','jquery'],function(){
+        var form = layui.form,
+            layer = parent.layer === undefined ? layui.layer : top.layer
+        $ = layui.jquery;
+
+        //登录按钮
+        form.on("submit(login)",function(data){
+            var btn =  $(this);
+            //设置登录按钮  为不可点击
+            btn.text("登录中...").attr("disabled","disabled").addClass("layui-disabled");
+            $.post("/login/login",data.field,function(rs){
+                //设置登录按钮 恢复可点击   在前端防止 重复点击
+                btn.text("登录").attr("disabled",false).removeClass("layui-disabled");
+                layer.msg(rs.msg);
+                if(rs.code != 200){
+                    layer.msg(rs.msg);
+                    $.get("/login/getCode",function (code) {
+                        $("#img").attr("src","/login/getCode");
+                    })
+                }else{
+                    layer.msg(rs.msg);
+                    location.href="/covidManageSystem/home";
+                }
+            });
+            return false;
+        })
+
+        //表单输入效果
+        $(".loginBody .input-item").click(function(e){
+            e.stopPropagation();
+            $(this).addClass("layui-input-focus").find(".layui-input").focus();
+        })
+        $(".loginBody .layui-form-item .layui-input").focus(function(){
+            $(this).parent().addClass("layui-input-focus");
+        })
+        $(".loginBody .layui-form-item .layui-input").blur(function(){
+            $(this).parent().removeClass("layui-input-focus");
+            if($(this).val() != ''){
+                $(this).parent().addClass("layui-input-active");
+            }else{
+                $(this).parent().removeClass("layui-input-active");
+            }
+        })
+    });
+
+
+</script>
+</body>
+</html>

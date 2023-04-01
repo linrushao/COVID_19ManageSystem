@@ -1,0 +1,41 @@
+/*body {*/
+/*	margin: 0;*/
+/*	background: #9eaa99;*/
+/*	line-height:1.15;*/
+/*}*/
+
+#globeVaccine_l1 {
+	position: absolute;
+	width: 40%;
+	height: 99%;
+	top: 0%;
+	/*left: 20%;*/
+	/*background: #aefe32;*/
+}
+#globeVaccine_c1 {
+	position: absolute;
+	width: 55%;
+	height: 59%;
+	top: 0%;
+	left: 43%;
+	/*background: #9C1A8C;*/
+}
+
+#globeVaccine_c2 {
+	position: absolute;
+	width: 30%;
+	height: 40%;
+	top: 59%;
+	left: 40%;
+	/*background: #9C1A1C;*/
+}
+#globeVaccine_r1{
+	position: absolute;
+	width: 30%;
+	height: 40%;
+	top: 59%;
+	left: 70%;
+	/*background: #2699FB;*/
+}
+
+

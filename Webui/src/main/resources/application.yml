@@ -1,0 +1,30 @@
+#spring.datasource.driverClassName = com.mysql.jdbc.Driver
+#spring.datasource.url = jdbc:mysql://localhost:3306/bigdata?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8
+#spring.datasource.username = root
+#spring.datasource.password = linrushao
+spring:
+  datasource:
+    username: root
+    password: linrushao
+    url: jdbc:mysql://localhost:3306/bigdata?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8
+    driver-class-name: com.mysql.jdbc.Driver
+
+
+#shiro配置路径
+shiro:
+  anon-urls:
+    - /css/**
+    - /fonts/**
+    - /images/**
+    - /js/**
+    - /layui/layui/**
+    - /layui_1/**
+    - /managesystemlib/**
+    - /toLogin*
+    - /index.html*
+    - /login/login
+    - /login/getCode
+  login-url: /
+  log-out-url: /login/logout*
+  authc-urls:
+    - /**
